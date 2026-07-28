@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Object manipulation and transformation in mixed reality: concepts, methods, metaphors, and key literature">
+  <title>MR Object Manipulation & Transformation | Animated Edition</title>
+  <style>
+    :root{
+      --ink:#13231d;--muted:#68766f;--paper:#f3f0e8;--card:#fbfaf6;
+      --lime:#c9ff63;--coral:#ff735e;--blue:#82b8ff;--line:#cfd5cc;
+      --dark:#13231d;--shadow:0 18px 50px rgba(19,35,29,.12);
+      --serif:"Iowan Old Style","Baskerville","Times New Roman",serif;
+      --sans:Inter,"Helvetica Neue","PingFang SC","Microsoft YaHei",sans-serif;
+    }
+    *{box-sizing:border-box} html{scroll-behavior:smooth;scroll-snap-type:y proximity}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);overflow-x:hidden}
+    a{color:inherit} button,input{font:inherit}
+    ::selection{background:var(--lime);color:var(--ink)}
+    .noise{position:fixed;inset:0;pointer-events:none;z-index:20;opacity:.035;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+    .rail{position:fixed;z-index:30;left:24px;right:24px;top:18px;display:flex;align-items:center;gap:18px;
+      padding:10px 14px;border:1px solid rgba(19,35,29,.18);background:rgba(243,240,232,.82);backdrop-filter:blur(16px)}
+    .brand{font-weight:850;letter-spacing:-.04em;white-space:nowrap}.brand i{color:var(--coral);font-style:normal}
+    .progress{height:3px;background:#d5d9d0;flex:1;overflow:hidden}.progress span{display:block;height:100%;width:0;background:var(--ink)}
+    .counter{font:700 12px/1 var(--sans);font-variant-numeric:tabular-nums;letter-spacing:.08em}
+    .present-btn{border:0;background:var(--ink);color:var(--paper);padding:8px 12px;cursor:pointer}
+    main{counter-reset:section}
+    .chapter{min-height:100vh;padding:110px clamp(28px,7vw,112px) 72px;position:relative;display:flex;flex-direction:column;
+      justify-content:center;scroll-snap-align:start;border-bottom:1px solid var(--line);counter-increment:section}
+    .chapter::after{content:"0" counter(section);position:absolute;right:clamp(28px,7vw,112px);bottom:28px;
+      font:800 12px/1 var(--sans);letter-spacing:.16em;color:var(--muted)}
+    .eyebrow{font:800 12px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;display:flex;align-items:center;gap:10px;margin-bottom:28px}
+    .eyebrow::before{content:"";width:28px;height:8px;background:var(--coral)}
+    h1,h2,h3,p{margin-top:0}h1,h2{font-family:var(--serif);font-weight:500;letter-spacing:-.055em}
+    h1{font-size:clamp(56px,10vw,148px);line-height:.82;max-width:1200px;margin-bottom:34px}
+    h1 em{font-style:italic;color:var(--coral)}
+    h2{font-size:clamp(48px,7vw,104px);line-height:.9;margin-bottom:38px;max-width:1100px}
+    h3{font-size:20px;line-height:1.1;letter-spacing:-.02em}
+    .lede{font-size:clamp(18px,2vw,28px);line-height:1.35;max-width:800px;color:#43524b}
+    .hero{overflow:hidden;background:var(--ink);color:var(--paper)}
+    .hero .lede{color:#cbd2cc}.hero .eyebrow::before{background:var(--lime)}
+    .hero-orbit{position:absolute;width:min(45vw,590px);aspect-ratio:1;right:-6vw;top:20vh;border:1px solid rgba(201,255,99,.35);border-radius:50%}
+    .hero-orbit::before,.hero-orbit::after{content:"";position:absolute;border:1px solid rgba(130,184,255,.35);border-radius:50%}
+    .hero-orbit::before{inset:15% -5%}.hero-orbit::after{inset:-8% 20%}
+    .object{position:absolute;width:150px;height:150px;right:18vw;top:39vh;background:var(--lime);transform:rotate(22deg);box-shadow:24px 24px 0 var(--coral)}
+    .axis{position:absolute;height:2px;width:250px;right:10vw;top:50vh;background:var(--blue);transform:rotate(-28deg)}
+    .axis::after{content:"";position:absolute;right:0;top:-5px;border-left:11px solid var(--blue);border-top:6px solid transparent;border-bottom:6px solid transparent}
+    .hero-meta{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}.pill{border:1px solid currentColor;padding:8px 11px;font-size:12px;letter-spacing:.05em}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--ink);border:1px solid var(--ink);margin-top:40px;max-width:980px}
+    .stat{padding:26px;background:var(--card)}.stat strong{display:block;font:500 clamp(42px,6vw,76px)/1 var(--serif);letter-spacing:-.06em}
+    .stat span{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+    .definition{display:grid;grid-template-columns:1.15fr .85fr;gap:7vw;align-items:center}
+    .formula{background:var(--ink);color:var(--paper);padding:38px;box-shadow:20px 20px 0 var(--lime)}
+    .formula-row{display:flex;align-items:center;gap:14px;padding:17px 0;border-bottom:1px solid #415049}.formula-row:last-child{border:0}
+    .formula b{font:500 45px/1 var(--serif);color:var(--lime);min-width:65px}.formula small{color:#bac5be;line-height:1.5}
+    .callout{border-left:8px solid var(--coral);padding-left:22px;font:italic 26px/1.35 var(--serif);max-width:760px}
+    .spectrum{display:grid;gap:16px;max-width:1100px;width:100%}
+    .s-row{display:grid;grid-template-columns:150px 1fr 150px;gap:18px;align-items:center;font-size:13px;font-weight:700}
+    .s-row span:last-child{text-align:right}.bar{height:18px;position:relative;background:linear-gradient(90deg,var(--coral),var(--lime),var(--blue))}
+    .bar i{position:absolute;top:-7px;width:4px;height:32px;background:var(--ink);left:var(--p)}
+    .concept-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;width:100%}
+    .concept{min-height:150px;padding:18px;border:1px solid var(--ink);background:var(--card);display:flex;flex-direction:column;justify-content:space-between;transition:.25s}
+    .concept:hover{transform:translateY(-5px);box-shadow:8px 8px 0 var(--ink);background:var(--lime)}
+    .concept b{font:500 24px/1.05 var(--serif)}.concept small{color:var(--muted);line-height:1.35}
+    .pipeline{display:grid;grid-template-columns:repeat(4,1fr);gap:0;width:100%;border:1px solid var(--ink)}
+    .step{min-height:260px;padding:25px;border-right:1px solid var(--ink);position:relative}.step:last-child{border:0}
+    .step .num{font:500 70px/1 var(--serif);color:var(--coral)}.step p{color:var(--muted);font-size:14px;line-height:1.55}
+    .step::after{content:"→";position:absolute;right:-16px;top:44%;z-index:2;background:var(--paper);padding:5px;font-size:24px}.step:last-child::after{display:none}
+    .dark{background:var(--dark);color:var(--paper)}.dark::after{color:#91a198}.dark .eyebrow::before{background:var(--blue)}
+    .method-map{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;width:100%}
+    .method{border:1px solid #53645a;padding:20px;min-height:175px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;transition:.2s;background:#172a23}
+    .method:hover{background:var(--lime);color:var(--ink);border-color:var(--lime)}.method .tag{font-size:10px;letter-spacing:.1em;color:var(--blue)}
+    .method:hover .tag{color:#405b08}.method strong{font:500 25px/1.05 var(--serif)}.method small{color:#aab8b0}.method:hover small{color:#445048}
+    .lineage{display:flex;align-items:stretch;gap:0;width:100%;overflow:auto;padding-bottom:12px}
+    .era{min-width:230px;border-top:5px solid var(--ink);padding:18px 20px 0 0;position:relative}
+    .era::before{content:"";width:13px;height:13px;background:var(--coral);border:3px solid var(--paper);outline:2px solid var(--ink);position:absolute;top:-11px;left:0;border-radius:50%}
+    .era time{font:700 12px/1 var(--sans);letter-spacing:.1em}.era h3{font:500 26px/1 var(--serif);margin-top:14px}.era p{font-size:12px;line-height:1.45;color:var(--muted);max-width:190px}
+    .metaphor-stage{display:grid;grid-template-columns:330px 1fr;gap:35px;min-height:520px;width:100%}
+    .metaphor-list{display:flex;flex-direction:column;border-top:1px solid var(--ink);overflow:auto;max-height:540px}
+    .metaphor-list button{appearance:none;border:0;border-bottom:1px solid var(--ink);background:transparent;padding:14px 4px;text-align:left;cursor:pointer;font-weight:750;display:flex;justify-content:space-between}
+    .metaphor-list button:hover,.metaphor-list button.active{padding-left:12px;background:var(--lime)}
+    .metaphor-view{border:1px solid var(--ink);background:var(--card);padding:40px;display:grid;grid-template-rows:1fr auto;position:relative;overflow:hidden}
+    .metaphor-view h3{font:500 clamp(38px,6vw,84px)/.9 var(--serif);max-width:680px}
+    .metaphor-view .mental{font:italic 24px/1.35 var(--serif);max-width:620px}.metaphor-view .ref{font-size:12px;color:var(--muted)}
+    .glyph{position:absolute;right:36px;bottom:76px;width:160px;height:160px;border:2px solid var(--ink);border-radius:50%}
+    .glyph::before{content:"";position:absolute;inset:35%;background:var(--coral);transform:rotate(25deg)}
+    .glyph::after{content:"";position:absolute;width:220px;height:2px;top:50%;right:50%;background:var(--ink);transform:rotate(-32deg);transform-origin:right}
+    .toolkit-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;width:100%}
+    .toolkit{padding:24px;border:1px solid var(--ink);background:var(--card)}.toolkit.featured{background:var(--lime);grid-row:span 2}
+    .toolkit .kind{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}.toolkit h3{font:500 30px/1 var(--serif);margin:18px 0 12px}
+    .toolkit p{font-size:13px;line-height:1.45;color:var(--muted)}.toolkit a{font-size:12px;font-weight:800;text-underline-offset:4px}
+    .evidence-toolbar{display:flex;gap:10px;align-items:center;width:100%;margin-bottom:18px;flex-wrap:wrap}
+    .search{flex:1;min-width:240px;border:1px solid var(--ink);background:var(--card);padding:13px 15px;outline:0}.search:focus{box-shadow:0 0 0 3px var(--lime)}
+    .filter{border:1px solid var(--ink);background:transparent;padding:12px 15px;cursor:pointer}.filter.active{background:var(--ink);color:var(--paper)}
+    .papers{width:100%;border-top:1px solid var(--ink)}.paper{display:grid;grid-template-columns:70px 110px 1fr 90px;gap:15px;align-items:start;padding:15px 0;border-bottom:1px solid var(--line)}
+    .paper .year{font:500 26px/1 var(--serif)}.paper .type{font-size:10px;font-weight:800;letter-spacing:.12em}.paper a{text-decoration:none;font-weight:750;line-height:1.25}.paper a:hover{text-decoration:underline;text-decoration-thickness:3px;text-decoration-color:var(--coral)}
+    .paper .topic{font-size:11px;color:var(--muted);text-align:right}.empty{padding:40px;text-align:center;color:var(--muted)}
+    .findings{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;width:100%}.finding{border:1px solid #53645a;padding:26px;min-height:190px}
+    .finding b{font:500 48px/1 var(--serif);color:var(--lime)}.finding h3{margin:14px 0}.finding p{color:#b3c0b8;font-size:13px;line-height:1.55}
+    .closing{background:var(--coral)}.closing h2{max-width:900px}.closing .eyebrow::before{background:var(--ink)}
+    .next{display:flex;gap:10px;flex-wrap:wrap}.next span{border:1px solid var(--ink);padding:10px 14px;background:rgba(255,255,255,.2);font-weight:750}
+    .source-link{margin-top:30px;display:inline-block;background:var(--ink);color:var(--paper);padding:14px 18px;text-decoration:none;font-weight:800}
+    dialog{max-width:650px;width:calc(100% - 40px);border:1px solid var(--ink);padding:0;background:var(--card);box-shadow:var(--shadow)}
+    dialog::backdrop{background:rgba(19,35,29,.72);backdrop-filter:blur(5px)}.modal-body{padding:34px}.modal-body h3{font:500 46px/1 var(--serif)}
+    .close{position:absolute;right:14px;top:14px;border:1px solid var(--ink);background:transparent;width:34px;height:34px;cursor:pointer}
+    .presenting .rail{opacity:0;transition:.3s}.presenting .rail:hover{opacity:1}
+    .presenting .chapter{scroll-snap-stop:always}
+    @media(max-width:900px){
+      .stats,.concept-grid,.method-map{grid-template-columns:repeat(2,1fr)}.definition,.metaphor-stage{grid-template-columns:1fr}
+      .pipeline{grid-template-columns:1fr 1fr}.step:nth-child(2){border-right:0}.step:nth-child(2)::after{display:none}
+      .toolkit-grid{grid-template-columns:1fr 1fr}.toolkit.featured{grid-row:auto}.findings{grid-template-columns:1fr}.hero-orbit,.object,.axis{opacity:.28}
+    }
+    @media(max-width:620px){
+      .rail{left:10px;right:10px}.brand{font-size:12px}.present-btn{display:none}.chapter{padding:92px 20px 60px}
+      .stats,.concept-grid,.method-map,.pipeline,.toolkit-grid{grid-template-columns:1fr}.step{border-right:0;border-bottom:1px solid var(--ink)}.step::after{display:none}
+      .s-row{grid-template-columns:95px 1fr 95px}.metaphor-stage{grid-template-columns:1fr}.metaphor-view{min-height:440px;padding:26px}.glyph{opacity:.25}
+      .paper{grid-template-columns:55px 70px 1fr}.paper .topic{display:none}
+    }
+    @media print{
+      .rail,.noise{display:none}.chapter{min-height:auto;page-break-after:always;padding:40px;border:0}.hero{min-height:100vh}
+      .concept:hover,.method:hover{transform:none;box-shadow:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="noise"></div>
+  <nav class="rail" aria-label="Presentation navigation">
+    <div class="brand">MR<i>×</i>MANIPULATION</div>
+    <div class="progress" aria-hidden="true"><span id="progress"></span></div>
+    <div class="counter"><span id="current">01</span> / <span id="total">11</span></div>
+    <button class="present-btn" id="present">Present</button>
+  </nav>
+
+  <main>
+    <section class="chapter hero" id="cover">
+      <div class="hero-orbit"></div><div class="axis"></div><div class="object"></div>
+      <div class="eyebrow">Literature map · 1995—2025</div>
+      <h1><em>Object manipulation</em><br>in mixed reality</h1>
+      <p class="lede">An auditable map of concepts, techniques, interaction metaphors, and key literature</p>
+      <div class="hero-meta"><span class="pill">29 core papers</span><span class="pill">26 concepts</span><span class="pill">20 metaphors</span><span class="pill">12 implementation stacks</span></div>
+    </section>
+
+    <section class="chapter" id="scope">
+      <div class="eyebrow">01 · Definition</div>
+      <div class="definition">
+        <div>
+          <h2>What exactly<br>do we manipulate?</h2>
+          <p class="lede">The field extends beyond grabbing and moving a hologram to changing an object’s spatial state, intrinsic structure, and relationship with the physical world.</p>
+          <p class="callout">Manipulation is not a gesture. It is a complete chain from selection and transformation to confirmation.</p>
+        </div>
+        <div class="formula">
+          <div class="formula-row"><b>3</b><div><strong>Position</strong><br><small>Translation along x · y · z</small></div></div>
+          <div class="formula-row"><b>3</b><div><strong>Orientation</strong><br><small>Pitch · yaw · roll rotation</small></div></div>
+          <div class="formula-row"><b>3</b><div><strong>Scale</strong><br><small>Uniform or non-uniform scaling</small></div></div>
+          <div class="formula-row"><b>+</b><div><strong>Intrinsic transformation</strong><br><small>Deform · cut · copy · group · change properties</small></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="landscape">
+      <div class="eyebrow">02 · Design space</div>
+      <h2>Beyond sensors,<br>the mapping matters</h2>
+      <div class="spectrum">
+        <div class="s-row"><span>Direct</span><div class="bar"><i style="--p:18%"></i></div><span>Indirect</span></div>
+        <div class="s-row"><span>Near</span><div class="bar"><i style="--p:42%"></i></div><span>Far</span></div>
+        <div class="s-row"><span>Egocentric</span><div class="bar"><i style="--p:64%"></i></div><span>Exocentric</span></div>
+        <div class="s-row"><span>Unimanual</span><div class="bar"><i style="--p:72%"></i></div><span>Bimanual</span></div>
+        <div class="s-row"><span>Integrated DOF</span><div class="bar"><i style="--p:51%"></i></div><span>Separated DOF</span></div>
+        <div class="s-row"><span>1:1 Isomorphic</span><div class="bar"><i style="--p:34%"></i></div><span>Non-isomorphic</span></div>
+      </div>
+    </section>
+
+    <section class="chapter" id="concepts">
+      <div class="eyebrow">03 · Key concepts</div>
+      <h2>26 concepts,<br>eight clusters</h2>
+      <div class="concept-grid">
+        <article class="concept"><b>Task structure</b><small>Select → manipulate → release<br>DOF · docking · Fitts’ law</small></article>
+        <article class="concept"><b>Spatial mapping</b><small>Reference frames · control–display gain<br>Position–orientation coupling · clutching</small></article>
+        <article class="concept"><b>Body & distance</b><small>Near / far · one / two hands<br>Proprioception · gorilla arm</small></article>
+        <article class="concept"><b>Reality integration</b><small>Registration · anchoring · occlusion<br>Scene understanding · physical plausibility</small></article>
+        <article class="concept"><b>Control strategy</b><small>Direct / indirect · isomorphic / non-isomorphic<br>Integrated / separated DOF</small></article>
+        <article class="concept"><b>Tangible interaction</b><small>Proxies · passive haptics<br>Space / time multiplexing</small></article>
+        <article class="concept"><b>Assistance</b><small>Constraints · snapping · semantic placement<br>Affordances · handles</small></article>
+        <article class="concept"><b>Multimodality</b><small>Hands · gaze · speech · controllers<br>Feedback & feedforward</small></article>
+      </div>
+    </section>
+
+    <section class="chapter" id="loop">
+      <div class="eyebrow">04 · Interaction loop</div>
+      <h2>Four gates in<br>every manipulation</h2>
+      <div class="pipeline">
+        <article class="step"><div class="num">01</div><h3>Acquire</h3><p>How is the target discovered and selected? Near grabs, rays, gaze, and proxies all begin here.</p></article>
+        <article class="step"><div class="num">02</div><h3>Map</h3><p>How do body and device motion map onto the object—1:1, gain-adjusted, non-linear, or frame-transformed?</p></article>
+        <article class="step"><div class="num">03</div><h3>Constrain</h3><p>Free 6/9-DOF, or axis, plane, snap, and collision constraints? Fluidity and precision are balanced here.</p></article>
+        <article class="step"><div class="num">04</div><h3>Confirm</h3><p>When does the object release, settle, or revert? Visual, audio, haptic, and ghost-pose feedback close the loop.</p></article>
+      </div>
+    </section>
+
+    <section class="chapter dark" id="methods">
+      <div class="eyebrow">05 · Method families</div>
+      <h2>22 methods,<br>not 22 islands</h2>
+      <div class="method-map" id="methodMap"></div>
+    </section>
+
+    <section class="chapter" id="lineage">
+      <div class="eyebrow">06 · Lineage</div>
+      <h2>A lineage of<br>MR manipulation</h2>
+      <div class="lineage">
+        <article class="era"><time>1995</time><h3>WIM</h3><p>Shrinks an entire world into the hand; establishes exocentric proxy manipulation.</p></article>
+        <article class="era"><time>1996</time><h3>Go-Go</h3><p>Extends the virtual arm non-linearly, taking direct grasp beyond physical reach.</p></article>
+        <article class="era"><time>1997</time><h3>HOMER</h3><p>Transitions from ray selection to hand-centered control for hybrid remote interaction.</p></article>
+        <article class="era"><time>1999</time><h3>Voodoo Dolls</h3><p>Uses transient bimanual proxies to expose scale and reference frames.</p></article>
+        <article class="era"><time>2000</time><h3>Magic Paddle</h3><p>A physical paddle pushes, carries, and manipulates virtual objects in tangible AR.</p></article>
+        <article class="era"><time>2012</time><h3>Handle Bar</h3><p>Two hands grip an invisible bar to integrate position, rotation, and scale.</p></article>
+        <article class="era"><time>2019</time><h3>ARPen</h3><p>A phone supplies the view while a pen supplies precise bimanual modeling input.</p></article>
+        <article class="era"><time>2020</time><h3>Tangible Proxy</h3><p>A generic sphere balances passive haptics with reuse across virtual forms.</p></article>
+        <article class="era"><time>2024–25</time><h3>Reality Proxy</h3><p>Proxies expand from virtual objects to distant and occluded physical objects.</p></article>
+      </div>
+    </section>
+
+    <section class="chapter" id="metaphors">
+      <div class="eyebrow">07 · Interaction metaphors</div>
+      <h2>Metaphors shape what<br>users think they are doing</h2>
+      <div class="metaphor-stage">
+        <div class="metaphor-list" id="metaphorList"></div>
+        <article class="metaphor-view">
+          <div><h3 id="metaTitle"></h3><p class="mental" id="metaMental"></p></div>
+          <p class="ref" id="metaRef"></p><div class="glyph" aria-hidden="true"></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="chapter" id="toolkits">
+      <div class="eyebrow">08 · Implementation stack</div>
+      <h2>A method is not<br>a toolkit</h2>
+      <p class="lede">“Built with MRTK” does not describe an experimental condition. Report near/far interaction, one/two hands, constraints, smoothing, physics, and visual feedback.</p>
+      <div class="toolkit-grid">
+        <article class="toolkit featured"><span class="kind">Mixed Reality Toolkit</span><h3>MRTK 2 / 3</h3><p>ObjectManipulator · BoundsControl · NearInteractionGrabbable · Constraints · near/far interactors</p><a href="https://learn.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/" target="_blank" rel="noreferrer">Documentation ↗</a></article>
+        <article class="toolkit"><span class="kind">Unity</span><h3>XR Interaction Toolkit</h3><p>Grab, direct, ray, and socket interactors; attach transforms and movement modes.</p><a href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@latest" target="_blank" rel="noreferrer">Source ↗</a></article>
+        <article class="toolkit"><span class="kind">Unity</span><h3>AR Foundation</h3><p>Planes, anchors, raycasts, meshing, occlusion, and target tracking.</p><a href="https://docs.unity3d.com/Packages/com.unity.xr.arfoundation@latest" target="_blank" rel="noreferrer">Source ↗</a></article>
+        <article class="toolkit"><span class="kind">Standard</span><h3>OpenXR</h3><p>Cross-device actions, spaces, hand tracking, and eye tracking; no prescribed metaphor.</p><a href="https://www.khronos.org/openxr/" target="_blank" rel="noreferrer">Source ↗</a></article>
+        <article class="toolkit"><span class="kind">Hand Tracking</span><h3>Ultraleap</h3><p>Optical hand tracking, contact and grasp logic, poses, and near/far interaction.</p><a href="https://docs.ultraleap.com/xr-and-tabletop/xr/unity/" target="_blank" rel="noreferrer">Source ↗</a></article>
+        <article class="toolkit"><span class="kind">Web / Engine</span><h3>Other stacks</h3><p>Unreal XR · Meta XR Interaction SDK · Magic Leap SDK · Vuforia · ARToolKit · WebXR</p></article>
+      </div>
+    </section>
+
+    <section class="chapter" id="evidence">
+      <div class="eyebrow">09 · Evidence base</div>
+      <h2>Key literature,<br>searchable and traceable</h2>
+      <div class="evidence-toolbar">
+        <input class="search" id="search" type="search" placeholder="Search authors, titles, or methods…" aria-label="Search papers">
+        <button class="filter active" data-filter="ALL">All</button>
+        <button class="filter" data-filter="F">Foundational VR</button>
+        <button class="filter" data-filter="MR">AR / MR</button>
+        <button class="filter" data-filter="S">Surveys</button>
+      </div>
+      <div class="papers" id="papers"></div>
+    </section>
+
+    <section class="chapter dark" id="findings">
+      <div class="eyebrow">10 · Synthesis</div>
+      <h2>Six claims from<br>the literature map</h2>
+      <div class="findings">
+        <article class="finding"><b>01</b><h3>Recombination outweighs invention</h3><p>Most MR systems recombine known metaphors: hand rays blend ray casting, HOMER, and virtual-hand control; Bounds Control spatializes the 3D gizmo.</p></article>
+        <article class="finding"><b>02</b><h3>Remote bare-hand control remains open</h3><p>Weak depth control, absent contact force, tracking noise, arm fatigue, and DOF cross-talk still occur together.</p></article>
+        <article class="finding"><b>03</b><h3>Rigid transformation dominates</h3><p>Translation and rotation are universal; scale is less consistent; deformation, topology, grouping, and semantic change remain underexplored in head-worn MR.</p></article>
+        <article class="finding"><b>04</b><h3>Tangibles work—but cost</h3><p>Physical proxies improve stability and touch while adding prop proliferation, tracking, and deployment costs. Generic proxies seek a compromise.</p></article>
+        <article class="finding"><b>05</b><h3>Results resist comparison</h3><p>Studies vary in distance, size, DOF, device, constraints, and measures. Completion times alone are rarely comparable.</p></article>
+        <article class="finding"><b>06</b><h3>Physical objects are the new frontier</h3><p>Reality Proxy, HoloBots, and MR drag-and-drop shift the problem from moving holograms to acting on physical objects through virtual representations.</p></article>
+      </div>
+    </section>
+
+    <section class="chapter closing" id="close">
+      <div class="eyebrow">11 · Audit checkpoint</div>
+      <h2>Now, audit<br>the map.</h2>
+      <p class="lede">The next pass can narrow around your research question: head-worn MR, bimanual cooperation, distant manipulation, intrinsic transformation, or physical-object proxies.</p>
+      <div class="next"><span>Define inclusion boundaries</span><span>Complete systematic search</span><span>Build the coding matrix</span><span>Form the design space</span></div>
+      <a class="source-link" href="mr_object_manipulation_literature_audit.md">Open the full audit →</a>
+    </section>
+  </main>
+
+  <dialog id="methodDialog">
+    <button class="close" aria-label="Close">×</button>
+    <div class="modal-body"><div class="eyebrow">Method detail</div><h3 id="dialogTitle"></h3><p id="dialogBody" class="lede"></p><p id="dialogRef"></p></div>
+  </dialog>
+
+  <script>
+    const methods=[
+      ["Virtual Hand","Near · direct","A tracked hand or controller grabs reachable objects with a 1:1 mapping.","Poupyrev et al., 1998"],
+      ["Go-Go","Far · non-linear","The virtual arm accelerates outward after crossing a physical threshold.","Poupyrev et al., UIST 1996"],
+      ["HOMER","Hybrid · far","Ray selection transitions into hand-centered manipulation.","Bowman & Hodges, 1997"],
+      ["Ray Casting","Far · indirect","A laser-like ray targets objects; depth and rotation use additional mappings.","Bowman & Hodges, 1997"],
+      ["Scaled-world Grab","Exocentric","The world shrinks—or the user grows—until distant objects become reachable.","Bowman & Hodges, 1997"],
+      ["WIM","Proxy · exocentric","Objects are manipulated through a handheld miniature world.","Stoakley et al., CHI 1995"],
+      ["Voodoo Dolls","Bimanual · proxy","Transient object copies expose scale and an explicit reference frame.","Pierce et al., I3D 1999"],
+      ["Image Plane","View-centered","Objects are selected and dragged through their projection in the image plane.","Pierce et al., 1997"],
+      ["Handle Bar","Bimanual · integrated DOF","Two hands grip an invisible bar to control object pose and scale.","Song et al., CHI 2012"],
+      ["Bounds / Gizmo","Separated DOF","Boxes, axes, rings, and corners explicitly constrain transformations.","MRTK BoundsControl"],
+      ["Articulated Grab","Near · bare hand","Pinch or grasp a hologram; two hands add scaling and rotation.","HoloLens 2 / MRTK"],
+      ["Hand Ray","Far · bare hand","Aim a hand ray, pinch to select, then map hand motion onto the remote object.","MRTK ObjectManipulator"],
+      ["Gaze + Hand","Multimodal","Gaze designates the target; a hand or controller performs the transformation.","VRST 2022"],
+      ["Touch + Head","Hybrid input","Touch and head or device motion divide control over different DOF.","Lee et al., 2019"],
+      ["Magic Paddle","Tangible AR","A physical paddle pushes, carries, or redirects virtual content.","Kato et al., ISAR 2000"],
+      ["Matched Proxy","Passive haptics","A physical prop matches the virtual target’s form.","Bozgeyikli & Bozgeyikli, 2020"],
+      ["Generic Proxy","Tangible · reusable","A sphere or cube dynamically binds to virtual objects of different forms.","Englmeier et al., IEEE VR 2020"],
+      ["ARPen","Bimanual · tool","A phone supplies the AR view while a pen supplies precise spatial input.","Wacker et al., CHI 2019"],
+      ["Gesture + Speech","Multimodal","Gesture identifies the referent; speech specifies action, axis, or quantity.","Zhou et al., 2022"],
+      ["Reality Proxy","Physical-object proxy","A manageable abstraction brings distant, occluded, or oversized physical objects to hand.","UIST 2025"],
+      ["MR Drag-and-Drop","Cross-reality","Pick up, transfer, and place content across physical and virtual representations.","HoloSpot, 2025"],
+      ["Cutaway Tool","Intrinsic transformation","Trace a cut on a physical surface to reveal virtual internal structure.","Computers & Graphics, 2025"]
+    ];
+    const metaphors=[
+      ["Virtual Hand","“My hand enters the mixed world and grasps as it does in reality.”","Poupyrev et al., 1998"],
+      ["Go-Go","“My arm has a superpower: it can stretch into the distance.”","Poupyrev et al., 1996"],
+      ["Laser Pointer","“I point at and pull objects with a beam.”","Bowman & Hodges, 1997"],
+      ["HOMER","“I point at an object, then my hand reaches it instantly.”","Bowman & Hodges, 1997"],
+      ["World-in-Miniature","“I hold a model of the entire world in my hands.”","Stoakley et al., 1995"],
+      ["Voodoo Dolls","“The proxy in my hand changes its distant counterpart.”","Pierce et al., 1999"],
+      ["Scaled World","“The world shrinks—or I become a giant.”","Bowman & Hodges, 1997"],
+      ["Handle Bar","“An invisible two-handed bar is attached to the object.”","Song et al., 2012"],
+      ["Bounding Cage","“The object sits inside an editable box with handles.”","Microsoft BoundsControl"],
+      ["Magic Paddle","“This physical paddle can scoop, push, or carry virtual things.”","Kato et al., 2000"],
+      ["Physical Twin","“The physical prop in my hand is the virtual object’s body.”","Ha & Woo, 2010"],
+      ["Generic Proxy","“This sphere becomes whichever object I select.”","Englmeier et al., 2020"],
+      ["Pen Tool","“I edit space with a familiar precision instrument.”","ARPen, 2019"],
+      ["Gaze-and-Grab","“I look at an object, then pick it up with my hand.”","VRST 2022"],
+      ["Speech + Gesture","“I point to the object and say how it should change.”","Zhou et al., 2022"],
+      ["Reality Proxy","“I bring a stand-in for an unreachable physical object to me.”","Reality Proxy, UIST 2025"]
+    ];
+    const papers=[
+      [1995,"F","Stoakley, Conway & Pausch","Virtual Reality on a WIM: Interactive Worlds in Miniature","WIM","https://www.cs.cmu.edu/~stage3/publications/95/conferences/chi/paper.html"],
+      [1996,"F","Poupyrev et al.","The Go-Go Interaction Technique","Go-Go","https://doi.org/10.1145/237091.237102"],
+      [1997,"S","Azuma","A Survey of Augmented Reality","Survey","https://doi.org/10.1162/pres.1997.6.4.355"],
+      [1997,"F","Bowman & Hodges","An Evaluation of Techniques for Grabbing and Manipulating Remote Objects","HOMER","https://www.cs.princeton.edu/courses/archive/spr01/cs598b/papers/bowman97.pdf"],
+      [1998,"F","Poupyrev et al.","Egocentric Object Manipulation in Virtual Environments","Virtual hand","https://doi.org/10.1111/1467-8659.00252"],
+      [1999,"F","Pierce, Stearns & Pausch","Voodoo Dolls: Seamless Interaction at Multiple Scales","Proxy","https://citeseerx.ist.psu.edu/document?doi=78361325d937304ed78413adbdb9ce2aba408388&repid=rep1&type=pdf"],
+      [2000,"MR","Kato et al.","Virtual Object Manipulation on a Table-top AR Environment","Tangible AR","https://doi.org/10.1109/ISAR.2000.880934"],
+      [2012,"F","Song et al.","A Handle Bar Metaphor for Virtual Object Manipulation","Bimanual","https://doi.org/10.1145/2208516.2208585"],
+      [2017,"MR","Ro et al.","A Dynamic Depth-variable Ray-casting Interface for Object Manipulation in AR","Ray casting","https://doi.org/10.1109/SMC.2017.8123063"],
+      [2018,"MR","Ohlei et al.","Evaluation of Direct Manipulation Methods in AR Using Google Glass","Direct","https://doi.org/10.1109/ISMAR-Adjunct.2018.00083"],
+      [2019,"S","Mendes et al.","A Survey on 3D Virtual Object Manipulation","Survey","https://doi.org/10.1111/cgf.13390"],
+      [2019,"MR","Wacker et al.","ARPen: Mid-Air Object Manipulation for a Bimanual AR System","Pen","https://hci.rwth-aachen.de/publications/wacker2019a.pdf"],
+      [2019,"MR","Lee et al.","Virtual Object Manipulation by Combining Touch and Head Interactions","Hybrid","https://doi.org/10.3390/app9142933"],
+      [2020,"MR","Nomura et al.","Object Manipulation for Perceiving a Sense of Material","Hand","https://doi.org/10.3169/mta.8.245"],
+      [2020,"MR","Englmeier et al.","A Tangible Spherical Proxy for Object Manipulation in AR","Proxy","https://doi.org/10.1109/VR46266.2020.00040"],
+      [2022,"MR","Zhou, Williams & Ortega","Eliciting Multimodal Gesture+Speech Interactions","Multimodal","https://arxiv.org/abs/2207.12566"],
+      [2022,"MR","VRST","Object Manipulation Using Eye Gaze and Hand-held Controller in AR","Gaze","https://doi.org/10.1145/3562939.3565659"],
+      [2023,"MR","Ihara et al.","HoloBots: Tangible Remote Collaboration in Mixed Reality","Physical","https://arxiv.org/abs/2307.16114"],
+      [2023,"MR","Frontiers VR","Creating and Manipulating 3D Paths with MR Spatial Interfaces","Path","https://doi.org/10.3389/frvir.2023.1192757"],
+      [2024,"MR","Caputo et al.","Comparison of Deviceless Methods for Distant Object Manipulation in MR","Distant","https://www.sciencedirect.com/science/article/abs/pii/S0097849324000943"],
+      [2025,"MR","UIST","Reality Proxy: Fluid Interactions with Real-World Objects in MR","Real proxy","https://doi.org/10.1145/3746059.3747709"],
+      [2025,"MR","HoloSpot","Intuitive Object Manipulation via MR Drag-and-Drop","Drag-drop","https://holospot.github.io/static/pdf/holospot_paper.pdf"]
+    ];
+
+    const methodMap=document.querySelector("#methodMap"), dialog=document.querySelector("#methodDialog");
+    methods.forEach((m,i)=>{
+      const el=document.createElement("article");el.className="method";el.tabIndex=0;
+      el.innerHTML=`<span class="tag">${String(i+1).padStart(2,"0")} · ${m[1]}</span><strong>${m[0]}</strong><small>${m[3]}</small>`;
+      const open=()=>{document.querySelector("#dialogTitle").textContent=m[0];document.querySelector("#dialogBody").textContent=m[2];document.querySelector("#dialogRef").textContent="Source: "+m[3];dialog.showModal()};
+      el.addEventListener("click",open);el.addEventListener("keydown",e=>{if(e.key==="Enter")open()});methodMap.appendChild(el);
+    });
+    dialog.querySelector(".close").onclick=()=>dialog.close();dialog.addEventListener("click",e=>{if(e.target===dialog)dialog.close()});
+
+    const ml=document.querySelector("#metaphorList");
+    function showMeta(i){[...ml.children].forEach((b,n)=>b.classList.toggle("active",n===i));document.querySelector("#metaTitle").textContent=metaphors[i][0];document.querySelector("#metaMental").textContent=metaphors[i][1];document.querySelector("#metaRef").textContent="Representative source · "+metaphors[i][2]}
+    metaphors.forEach((m,i)=>{const b=document.createElement("button");b.innerHTML=`<span>${m[0]}</span><span>↗</span>`;b.onclick=()=>showMeta(i);ml.appendChild(b)});showMeta(0);
+
+    let filter="ALL";const papersEl=document.querySelector("#papers"),search=document.querySelector("#search");
+    function renderPapers(){
+      const q=search.value.trim().toLowerCase();
+      const list=papers.filter(p=>(filter==="ALL"||p[1]===filter)&&p.join(" ").toLowerCase().includes(q));
+      papersEl.innerHTML=list.length?list.map(p=>`<article class="paper"><div class="year">${p[0]}</div><div class="type">${p[1]==="F"?"FOUNDATIONAL VR":p[1]==="MR"?"AR / MR":"SURVEY"}</div><a href="${p[5]}" target="_blank" rel="noreferrer">${p[2]} · ${p[3]} ↗</a><div class="topic">${p[4]}</div></article>`).join(""):`<div class="empty">No matching papers</div>`;
+    }
+    search.addEventListener("input",renderPapers);document.querySelectorAll(".filter").forEach(b=>b.onclick=()=>{filter=b.dataset.filter;document.querySelectorAll(".filter").forEach(x=>x.classList.toggle("active",x===b));renderPapers()});renderPapers();
+
+    const sections=[...document.querySelectorAll(".chapter")],progress=document.querySelector("#progress"),current=document.querySelector("#current");
+    document.querySelector("#total").textContent=String(sections.length).padStart(2,"0");
+    const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){const i=sections.indexOf(e.target);current.textContent=String(i+1).padStart(2,"0");progress.style.width=((i+1)/sections.length*100)+"%"}})},{threshold:.55});
+    sections.forEach(s=>observer.observe(s));
+    function jump(dir){const i=Math.max(0,Math.min(sections.length-1,Number(current.textContent)-1+dir));sections[i].scrollIntoView({behavior:"smooth"})}
+    addEventListener("keydown",e=>{if(["ArrowDown","ArrowRight","PageDown"," "].includes(e.key)){e.preventDefault();jump(1)}if(["ArrowUp","ArrowLeft","PageUp"].includes(e.key)){e.preventDefault();jump(-1)}if(e.key==="Home")sections[0].scrollIntoView();if(e.key==="End")sections.at(-1).scrollIntoView()});
+    document.querySelector("#present").onclick=async()=>{document.body.classList.toggle("presenting");if(!document.fullscreenElement)await document.documentElement.requestFullscreen?.();else await document.exitFullscreen?.()};
+  </script>
+  <script src="animated-enhancements.js"></script>
+</body>
+</html>
