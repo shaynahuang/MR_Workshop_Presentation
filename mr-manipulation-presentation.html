@@ -121,6 +121,7 @@
       .rail,.noise{display:none}.chapter{min-height:auto;page-break-after:always;padding:40px;border:0}.hero{min-height:100vh}
       .concept:hover,.method:hover{transform:none;box-shadow:none}
     }
+  .paper a{overflow-wrap:anywhere;min-width:0}.formula-row>b{white-space:nowrap}
   </style>
 </head>
 <body>
@@ -138,7 +139,7 @@
       <div class="eyebrow">Literature map · 1995—2025</div>
       <h1><em>Object manipulation</em><br>in mixed reality</h1>
       <p class="lede">An auditable map of concepts, techniques, interaction metaphors, and key literature</p>
-      <div class="hero-meta"><span class="pill">29 core papers</span><span class="pill">26 concepts</span><span class="pill">20 metaphors</span><span class="pill">12 implementation stacks</span></div>
+      <div class="hero-meta"><span class="pill">22 featured papers</span><span class="pill">30 concepts in full audit</span><span class="pill">16 featured metaphors</span><span class="pill">13 stacks in full audit</span></div>
     </section>
 
     <section class="chapter" id="scope">
@@ -147,12 +148,12 @@
         <div>
           <h2>What exactly<br>do we manipulate?</h2>
           <p class="lede">The field extends beyond grabbing and moving a hologram to changing an object’s spatial state, intrinsic structure, and relationship with the physical world.</p>
-          <p class="callout">Manipulation is not a gesture. It is a complete chain from selection and transformation to confirmation.</p>
+          <p class="callout">This map considers selection, transformation, and release together. Rigid pose has 6 DOF; uniform scaling adds 1, and independent three-axis scaling adds 3.</p>
         </div>
         <div class="formula">
           <div class="formula-row"><b>3</b><div><strong>Position</strong><br><small>Translation along x · y · z</small></div></div>
           <div class="formula-row"><b>3</b><div><strong>Orientation</strong><br><small>Pitch · yaw · roll rotation</small></div></div>
-          <div class="formula-row"><b>3</b><div><strong>Scale</strong><br><small>Uniform or non-uniform scaling</small></div></div>
+          <div class="formula-row"><b>1/3</b><div><strong>Scale</strong><br><small>Uniform: 1 DOF · independent x/y/z: 3 DOF</small></div></div>
           <div class="formula-row"><b>+</b><div><strong>Intrinsic transformation</strong><br><small>Deform · cut · copy · group · change properties</small></div></div>
         </div>
       </div>
@@ -161,19 +162,20 @@
     <section class="chapter" id="landscape">
       <div class="eyebrow">02 · Design space</div>
       <h2>Beyond sensors,<br>the mapping matters</h2>
+      <p class="lede">Qualitative design dimensions, not measured scores. Techniques may combine categories.</p>
       <div class="spectrum">
-        <div class="s-row"><span>Direct</span><div class="bar"><i style="--p:18%"></i></div><span>Indirect</span></div>
-        <div class="s-row"><span>Near</span><div class="bar"><i style="--p:42%"></i></div><span>Far</span></div>
-        <div class="s-row"><span>Egocentric</span><div class="bar"><i style="--p:64%"></i></div><span>Exocentric</span></div>
-        <div class="s-row"><span>Unimanual</span><div class="bar"><i style="--p:72%"></i></div><span>Bimanual</span></div>
-        <div class="s-row"><span>Integrated DOF</span><div class="bar"><i style="--p:51%"></i></div><span>Separated DOF</span></div>
-        <div class="s-row"><span>1:1 Isomorphic</span><div class="bar"><i style="--p:34%"></i></div><span>Non-isomorphic</span></div>
+        <div class="s-row"><span>Direct</span><div class="bar"></div><span>Indirect</span></div>
+        <div class="s-row"><span>Near</span><div class="bar"></div><span>Far</span></div>
+        <div class="s-row"><span>Egocentric</span><div class="bar"></div><span>Exocentric</span></div>
+        <div class="s-row"><span>Unimanual</span><div class="bar"></div><span>Bimanual</span></div>
+        <div class="s-row"><span>Integrated DOF</span><div class="bar"></div><span>Separated DOF</span></div>
+        <div class="s-row"><span>1:1 Isomorphic</span><div class="bar"></div><span>Non-isomorphic</span></div>
       </div>
     </section>
 
     <section class="chapter" id="concepts">
       <div class="eyebrow">03 · Key concepts</div>
-      <h2>26 concepts,<br>eight clusters</h2>
+      <h2>Eight clusters,<br>30 concepts in the audit</h2>
       <div class="concept-grid">
         <article class="concept"><b>Task structure</b><small>Select → manipulate → release<br>DOF · docking · Fitts’ law</small></article>
         <article class="concept"><b>Spatial mapping</b><small>Reference frames · control–display gain<br>Position–orientation coupling · clutching</small></article>
@@ -188,12 +190,12 @@
 
     <section class="chapter" id="loop">
       <div class="eyebrow">04 · Interaction loop</div>
-      <h2>Four gates in<br>every manipulation</h2>
+      <h2>Four design questions<br>for manipulation</h2>
       <div class="pipeline">
         <article class="step"><div class="num">01</div><h3>Acquire</h3><p>How is the target discovered and selected? Near grabs, rays, gaze, and proxies all begin here.</p></article>
         <article class="step"><div class="num">02</div><h3>Map</h3><p>How do body and device motion map onto the object—1:1, gain-adjusted, non-linear, or frame-transformed?</p></article>
-        <article class="step"><div class="num">03</div><h3>Constrain</h3><p>Free 6/9-DOF, or axis, plane, snap, and collision constraints? Fluidity and precision are balanced here.</p></article>
-        <article class="step"><div class="num">04</div><h3>Confirm</h3><p>When does the object release, settle, or revert? Visual, audio, haptic, and ghost-pose feedback close the loop.</p></article>
+        <article class="step"><div class="num">03</div><h3>Constrain</h3><p>Free 6/7/9-DOF, or axis, plane, snap, and collision constraints? Constraints are optional and may act throughout the interaction.</p></article>
+        <article class="step"><div class="num">04</div><h3>Confirm</h3><p>How does the interaction end, settle, or revert? Confirmation may be implicit; feedback can accompany the entire interaction.</p></article>
       </div>
     </section>
 
@@ -215,7 +217,7 @@
         <article class="era"><time>2012</time><h3>Handle Bar</h3><p>Two hands grip an invisible bar to integrate position, rotation, and scale.</p></article>
         <article class="era"><time>2019</time><h3>ARPen</h3><p>A phone supplies the view while a pen supplies precise bimanual modeling input.</p></article>
         <article class="era"><time>2020</time><h3>Tangible Proxy</h3><p>A generic sphere balances passive haptics with reuse across virtual forms.</p></article>
-        <article class="era"><time>2024–25</time><h3>Reality Proxy</h3><p>Proxies expand from virtual objects to distant and occluded physical objects.</p></article>
+        <article class="era"><time>2025</time><h3>Reality Proxy</h3><p>Digital proxies support selection and semantic interaction with distant, crowded, or occluded real-world objects.</p></article>
       </div>
     </section>
 
@@ -236,10 +238,10 @@
       <h2>A method is not<br>a toolkit</h2>
       <p class="lede">“Built with MRTK” does not describe an experimental condition. Report near/far interaction, one/two hands, constraints, smoothing, physics, and visual feedback.</p>
       <div class="toolkit-grid">
-        <article class="toolkit featured"><span class="kind">Mixed Reality Toolkit</span><h3>MRTK 2 / 3</h3><p>ObjectManipulator · BoundsControl · NearInteractionGrabbable · Constraints · near/far interactors</p><a href="https://learn.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/" target="_blank" rel="noreferrer">Documentation ↗</a></article>
+        <article class="toolkit featured"><span class="kind">Mixed Reality Toolkit</span><h3>MRTK 2 / 3</h3><p>MRTK2: ObjectManipulator, BoundsControl, NearInteractionGrabbable. MRTK3: ObjectManipulator, BoundsControl, XRI-based interactors/interactables and constraints.</p><a href="https://learn.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/" target="_blank" rel="noreferrer">Documentation ↗</a></article>
         <article class="toolkit"><span class="kind">Unity</span><h3>XR Interaction Toolkit</h3><p>Grab, direct, ray, and socket interactors; attach transforms and movement modes.</p><a href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@latest" target="_blank" rel="noreferrer">Source ↗</a></article>
         <article class="toolkit"><span class="kind">Unity</span><h3>AR Foundation</h3><p>Planes, anchors, raycasts, meshing, occlusion, and target tracking.</p><a href="https://docs.unity3d.com/Packages/com.unity.xr.arfoundation@latest" target="_blank" rel="noreferrer">Source ↗</a></article>
-        <article class="toolkit"><span class="kind">Standard</span><h3>OpenXR</h3><p>Cross-device actions, spaces, hand tracking, and eye tracking; no prescribed metaphor.</p><a href="https://www.khronos.org/openxr/" target="_blank" rel="noreferrer">Source ↗</a></article>
+        <article class="toolkit"><span class="kind">Standard</span><h3>OpenXR</h3><p>Core actions and spaces; hand tracking and eye-gaze input through supported extensions. No prescribed manipulation metaphor.</p><a href="https://www.khronos.org/openxr/" target="_blank" rel="noreferrer">Source ↗</a></article>
         <article class="toolkit"><span class="kind">Hand Tracking</span><h3>Ultraleap</h3><p>Optical hand tracking, contact and grasp logic, poses, and near/far interaction.</p><a href="https://docs.ultraleap.com/xr-and-tabletop/xr/unity/" target="_blank" rel="noreferrer">Source ↗</a></article>
         <article class="toolkit"><span class="kind">Web / Engine</span><h3>Other stacks</h3><p>Unreal XR · Meta XR Interaction SDK · Magic Leap SDK · Vuforia · ARToolKit · WebXR</p></article>
       </div>
@@ -247,7 +249,8 @@
 
     <section class="chapter" id="evidence">
       <div class="eyebrow">09 · Evidence base</div>
-      <h2>Key literature,<br>searchable and traceable</h2>
+      <h2>Selected literature,<br>searchable and traceable</h2>
+      <p class="lede">22 featured papers. The full audit contains 30 references, including a textbook; it is a seed set, not a systematic review.</p>
       <div class="evidence-toolbar">
         <input class="search" id="search" type="search" placeholder="Search authors, titles, or methods…" aria-label="Search papers">
         <button class="filter active" data-filter="ALL">All</button>
@@ -260,14 +263,14 @@
 
     <section class="chapter dark" id="findings">
       <div class="eyebrow">10 · Synthesis</div>
-      <h2>Six claims from<br>the literature map</h2>
+      <h2>Six observations from<br>this selected literature</h2>
       <div class="findings">
-        <article class="finding"><b>01</b><h3>Recombination outweighs invention</h3><p>Most MR systems recombine known metaphors: hand rays blend ray casting, HOMER, and virtual-hand control; Bounds Control spatializes the 3D gizmo.</p></article>
+        <article class="finding"><b>01</b><h3>Established metaphors recur</h3><p>In these selected examples, techniques reuse familiar ideas such as ray selection, remote hand control, and spatial transform handles. This is a qualitative observation, not a prevalence estimate.</p></article>
         <article class="finding"><b>02</b><h3>Remote bare-hand control remains open</h3><p>Weak depth control, absent contact force, tracking noise, arm fatigue, and DOF cross-talk still occur together.</p></article>
-        <article class="finding"><b>03</b><h3>Rigid transformation dominates</h3><p>Translation and rotation are universal; scale is less consistent; deformation, topology, grouping, and semantic change remain underexplored in head-worn MR.</p></article>
-        <article class="finding"><b>04</b><h3>Tangibles work—but cost</h3><p>Physical proxies improve stability and touch while adding prop proliferation, tracking, and deployment costs. Generic proxies seek a compromise.</p></article>
+        <article class="finding"><b>03</b><h3>Pose control in this selection</h3><p>Many selected studies examine translation and rotation. The coverage here does not establish how extensively deformation, grouping, or semantic editing are studied across head-worn MR.</p></article>
+        <article class="finding"><b>04</b><h3>Tangibles offer task-specific benefits</h3><p>Physical proxies provide passive haptics and can improve performance in particular tasks; outcomes depend on the comparator and mapping. Prop availability and tracking add deployment costs.</p></article>
         <article class="finding"><b>05</b><h3>Results resist comparison</h3><p>Studies vary in distance, size, DOF, device, constraints, and measures. Completion times alone are rarely comparable.</p></article>
-        <article class="finding"><b>06</b><h3>Physical objects are the new frontier</h3><p>Reality Proxy, HoloBots, and MR drag-and-drop shift the problem from moving holograms to acting on physical objects through virtual representations.</p></article>
+        <article class="finding"><b>06</b><h3>Digital proxies and physical actuation</h3><p>Reality Proxy supports selection, filtering, and group navigation through digital stand-ins. HoloBots and HoloSpot additionally use robots to act on the physical environment.</p></article>
       </div>
     </section>
 
@@ -291,7 +294,7 @@
       ["Go-Go","Far · non-linear","The virtual arm accelerates outward after crossing a physical threshold.","Poupyrev et al., UIST 1996"],
       ["HOMER","Hybrid · far","Ray selection transitions into hand-centered manipulation.","Bowman & Hodges, 1997"],
       ["Ray Casting","Far · indirect","A laser-like ray targets objects; depth and rotation use additional mappings.","Bowman & Hodges, 1997"],
-      ["Scaled-world Grab","Exocentric","The world shrinks—or the user grows—until distant objects become reachable.","Bowman & Hodges, 1997"],
+      ["Scaled-world Grab","Exocentric","The world shrinks—or the user grows—until distant objects become reachable.","Mine, Brooks & Séquin, SIGGRAPH 1997"],
       ["WIM","Proxy · exocentric","Objects are manipulated through a handheld miniature world.","Stoakley et al., CHI 1995"],
       ["Voodoo Dolls","Bimanual · proxy","Transient object copies expose scale and an explicit reference frame.","Pierce et al., I3D 1999"],
       ["Image Plane","View-centered","Objects are selected and dragged through their projection in the image plane.","Pierce et al., 1997"],
@@ -299,15 +302,15 @@
       ["Bounds / Gizmo","Separated DOF","Boxes, axes, rings, and corners explicitly constrain transformations.","MRTK BoundsControl"],
       ["Articulated Grab","Near · bare hand","Pinch or grasp a hologram; two hands add scaling and rotation.","HoloLens 2 / MRTK"],
       ["Hand Ray","Far · bare hand","Aim a hand ray, pinch to select, then map hand motion onto the remote object.","MRTK ObjectManipulator"],
-      ["Gaze + Hand","Multimodal","Gaze designates the target; a hand or controller performs the transformation.","VRST 2022"],
-      ["Touch + Head","Hybrid input","Touch and head or device motion divide control over different DOF.","Lee et al., 2019"],
+      ["Gaze + Hand","Multimodal","Eye gaze sets ray direction; a handheld controller adjusts ray length and selects targets.","Ishibashi & Kawaguchi, VRST 2022"],
+      ["Touch + Head","Hybrid input","Finger-worn IMU touch input and head motion divide translation DOF across two interaction mappings.","Oh et al., 2019"],
       ["Magic Paddle","Tangible AR","A physical paddle pushes, carries, or redirects virtual content.","Kato et al., ISAR 2000"],
       ["Matched Proxy","Passive haptics","A physical prop matches the virtual target’s form.","Bozgeyikli & Bozgeyikli, 2020"],
       ["Generic Proxy","Tangible · reusable","A sphere or cube dynamically binds to virtual objects of different forms.","Englmeier et al., IEEE VR 2020"],
       ["ARPen","Bimanual · tool","A phone supplies the AR view while a pen supplies precise spatial input.","Wacker et al., CHI 2019"],
       ["Gesture + Speech","Multimodal","Gesture identifies the referent; speech specifies action, axis, or quantity.","Zhou et al., 2022"],
-      ["Reality Proxy","Physical-object proxy","A manageable abstraction brings distant, occluded, or oversized physical objects to hand.","UIST 2025"],
-      ["MR Drag-and-Drop","Cross-reality","Pick up, transfer, and place content across physical and virtual representations.","HoloSpot, 2025"],
+      ["Reality Proxy","Physical-object proxy","Digital proxies support selection, semantic filtering, and hierarchical navigation of real-world objects; manipulating a proxy does not itself move a physical object.","UIST 2025"],
+      ["MR Drag-and-Drop","Cross-reality","Drag objects in a miniature room model to command a Spot robot to pick up and place their physical counterparts.","Soler Garcia et al., 2024"],
       ["Cutaway Tool","Intrinsic transformation","Trace a cut on a physical surface to reveal virtual internal structure.","Computers & Graphics, 2025"]
     ];
     const metaphors=[
@@ -317,40 +320,40 @@
       ["HOMER","“I point at an object, then my hand reaches it instantly.”","Bowman & Hodges, 1997"],
       ["World-in-Miniature","“I hold a model of the entire world in my hands.”","Stoakley et al., 1995"],
       ["Voodoo Dolls","“The proxy in my hand changes its distant counterpart.”","Pierce et al., 1999"],
-      ["Scaled World","“The world shrinks—or I become a giant.”","Bowman & Hodges, 1997"],
+      ["Scaled World","“The world shrinks—or I become a giant.”","Mine, Brooks & Séquin, SIGGRAPH 1997"],
       ["Handle Bar","“An invisible two-handed bar is attached to the object.”","Song et al., 2012"],
       ["Bounding Cage","“The object sits inside an editable box with handles.”","Microsoft BoundsControl"],
       ["Magic Paddle","“This physical paddle can scoop, push, or carry virtual things.”","Kato et al., 2000"],
       ["Physical Twin","“The physical prop in my hand is the virtual object’s body.”","Ha & Woo, 2010"],
       ["Generic Proxy","“This sphere becomes whichever object I select.”","Englmeier et al., 2020"],
       ["Pen Tool","“I edit space with a familiar precision instrument.”","ARPen, 2019"],
-      ["Gaze-and-Grab","“I look at an object, then pick it up with my hand.”","VRST 2022"],
+      ["Gaze-and-Grab","“I look at an object, then pick it up with my hand.”","Ishibashi & Kawaguchi, VRST 2022"],
       ["Speech + Gesture","“I point to the object and say how it should change.”","Zhou et al., 2022"],
       ["Reality Proxy","“I bring a stand-in for an unreachable physical object to me.”","Reality Proxy, UIST 2025"]
     ];
     const papers=[
       [1995,"F","Stoakley, Conway & Pausch","Virtual Reality on a WIM: Interactive Worlds in Miniature","WIM","https://www.cs.cmu.edu/~stage3/publications/95/conferences/chi/paper.html"],
-      [1996,"F","Poupyrev et al.","The Go-Go Interaction Technique","Go-Go","https://doi.org/10.1145/237091.237102"],
+      [1996,"F","Poupyrev et al.","The Go-Go Interaction Technique: Non-linear Mapping for Direct Manipulation in VR","Go-Go","https://doi.org/10.1145/237091.237102"],
       [1997,"S","Azuma","A Survey of Augmented Reality","Survey","https://doi.org/10.1162/pres.1997.6.4.355"],
-      [1997,"F","Bowman & Hodges","An Evaluation of Techniques for Grabbing and Manipulating Remote Objects","HOMER","https://www.cs.princeton.edu/courses/archive/spr01/cs598b/papers/bowman97.pdf"],
-      [1998,"F","Poupyrev et al.","Egocentric Object Manipulation in Virtual Environments","Virtual hand","https://doi.org/10.1111/1467-8659.00252"],
-      [1999,"F","Pierce, Stearns & Pausch","Voodoo Dolls: Seamless Interaction at Multiple Scales","Proxy","https://citeseerx.ist.psu.edu/document?doi=78361325d937304ed78413adbdb9ce2aba408388&repid=rep1&type=pdf"],
+      [1997,"F","Bowman & Hodges","An Evaluation of Techniques for Grabbing and Manipulating Remote Objects in Immersive Virtual Environments","HOMER","https://www.cs.princeton.edu/courses/archive/spr01/cs598b/papers/bowman97.pdf"],
+      [1998,"F","Poupyrev et al.","Egocentric Object Manipulation in Virtual Environments: Empirical Evaluation of Interaction Techniques","Virtual hand","https://doi.org/10.1111/1467-8659.00252"],
+      [1999,"F","Pierce, Stearns & Pausch","Voodoo Dolls: Seamless Interaction at Multiple Scales in Virtual Environments","Proxy","https://citeseerx.ist.psu.edu/document?doi=78361325d937304ed78413adbdb9ce2aba408388&repid=rep1&type=pdf"],
       [2000,"MR","Kato et al.","Virtual Object Manipulation on a Table-top AR Environment","Tangible AR","https://doi.org/10.1109/ISAR.2000.880934"],
-      [2012,"F","Song et al.","A Handle Bar Metaphor for Virtual Object Manipulation","Bimanual","https://doi.org/10.1145/2208516.2208585"],
-      [2017,"MR","Ro et al.","A Dynamic Depth-variable Ray-casting Interface for Object Manipulation in AR","Ray casting","https://doi.org/10.1109/SMC.2017.8123063"],
-      [2018,"MR","Ohlei et al.","Evaluation of Direct Manipulation Methods in AR Using Google Glass","Direct","https://doi.org/10.1109/ISMAR-Adjunct.2018.00083"],
-      [2019,"S","Mendes et al.","A Survey on 3D Virtual Object Manipulation","Survey","https://doi.org/10.1111/cgf.13390"],
-      [2019,"MR","Wacker et al.","ARPen: Mid-Air Object Manipulation for a Bimanual AR System","Pen","https://hci.rwth-aachen.de/publications/wacker2019a.pdf"],
-      [2019,"MR","Lee et al.","Virtual Object Manipulation by Combining Touch and Head Interactions","Hybrid","https://doi.org/10.3390/app9142933"],
-      [2020,"MR","Nomura et al.","Object Manipulation for Perceiving a Sense of Material","Hand","https://doi.org/10.3169/mta.8.245"],
-      [2020,"MR","Englmeier et al.","A Tangible Spherical Proxy for Object Manipulation in AR","Proxy","https://doi.org/10.1109/VR46266.2020.00040"],
-      [2022,"MR","Zhou, Williams & Ortega","Eliciting Multimodal Gesture+Speech Interactions","Multimodal","https://arxiv.org/abs/2207.12566"],
-      [2022,"MR","VRST","Object Manipulation Using Eye Gaze and Hand-held Controller in AR","Gaze","https://doi.org/10.1145/3562939.3565659"],
-      [2023,"MR","Ihara et al.","HoloBots: Tangible Remote Collaboration in Mixed Reality","Physical","https://arxiv.org/abs/2307.16114"],
-      [2023,"MR","Frontiers VR","Creating and Manipulating 3D Paths with MR Spatial Interfaces","Path","https://doi.org/10.3389/frvir.2023.1192757"],
-      [2024,"MR","Caputo et al.","Comparison of Deviceless Methods for Distant Object Manipulation in MR","Distant","https://www.sciencedirect.com/science/article/abs/pii/S0097849324000943"],
-      [2025,"MR","UIST","Reality Proxy: Fluid Interactions with Real-World Objects in MR","Real proxy","https://doi.org/10.1145/3746059.3747709"],
-      [2025,"MR","HoloSpot","Intuitive Object Manipulation via MR Drag-and-Drop","Drag-drop","https://holospot.github.io/static/pdf/holospot_paper.pdf"]
+      [2012,"F","Song et al.","A Handle Bar Metaphor for Virtual Object Manipulation with Mid-air Interaction","Bimanual","https://doi.org/10.1145/2208516.2208585"],
+      [2017,"MR","Ro et al.","A Dynamic Depth-variable Ray-casting Interface for Object Manipulation in AR Environments","Ray casting","https://doi.org/10.1109/SMC.2017.8123063"],
+      [2018,"MR","Ohlei et al.","Evaluation of Direct Manipulation Methods in Augmented Reality Environments Using Google Glass","Direct","https://doi.org/10.1109/ISMAR-Adjunct.2018.00083"],
+      [2019,"S","Mendes et al.","A Survey on 3D Virtual Object Manipulation: From the Desktop to Immersive Virtual Environments","Survey","https://doi.org/10.1111/cgf.13390"],
+      [2019,"MR","Wacker et al.","ARPen: Mid-Air Object Manipulation Techniques for a Bimanual AR System with Pen & Smartphone","Pen","https://hci.rwth-aachen.de/publications/wacker2019a.pdf"],
+      [2019,"MR","Oh et al.","Virtual Object Manipulation by Combining Touch and Head Interactions for Mobile Augmented Reality","Hybrid","https://doi.org/10.3390/app9142933"],
+      [2020,"MR","Nomura et al.","Object Manipulation for Perceiving a Sense of Material using User-Perspective Mobile Augmented Reality","Hand","https://doi.org/10.3169/mta.8.245"],
+      [2020,"MR","Englmeier et al.","A Tangible Spherical Proxy for Object Manipulation in Augmented Reality","Proxy","https://doi.org/10.1109/VR46266.2020.00041"],
+      [2022,"MR","Zhou, Williams & Ortega","Eliciting Multimodal Gesture+Speech Interactions in a Multi-Object Augmented Reality Environment","Multimodal","https://arxiv.org/abs/2207.12566"],
+      [2022,"MR","Ishibashi & Kawaguchi","Object Manipulation Method Using Eye Gaze and Hand-held Controller in AR Space","Gaze","https://doi.org/10.1145/3562939.3565659"],
+      [2023,"MR","Ihara et al.","HoloBots: Augmenting Holographic Telepresence with Mobile Robots for Tangible Remote Collaboration in Mixed Reality","Physical","https://arxiv.org/abs/2307.16114"],
+      [2023,"MR","Hutton Pospick & Suma Rosenberg","Creating and Manipulating 3D Paths with MR Spatial Interfaces","Path","https://doi.org/10.3389/frvir.2023.1192757"],
+      [2024,"MR","Caputo et al.","Comparison of Deviceless Methods for Distant Object Manipulation in Mixed Reality","Distant","https://www.sciencedirect.com/science/article/abs/pii/S0097849324000943"],
+      [2025,"MR","Liu et al.","Reality Proxy: Fluid Interactions with Real-World Objects in MR via Abstract Representations","Real proxy","https://doi.org/10.1145/3746059.3747709"],
+      [2024,"MR","Soler Garcia et al.","HoloSpot: Intuitive Object Manipulation via Mixed Reality Drag-and-Drop","Drag-drop","https://holospot.github.io/static/pdf/holospot_paper.pdf"]
     ];
 
     const methodMap=document.querySelector("#methodMap"), dialog=document.querySelector("#methodDialog");

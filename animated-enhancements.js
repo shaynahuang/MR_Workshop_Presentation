@@ -155,7 +155,7 @@
         case"arpen":return O+`<rect class="line" x="35" y="25" width="170" height="130"/><path class="line thin" d="M120 25v130M35 90h170"/><g class="vxy"><path class="accentline" d="M265 130l75-90"/><circle class="obj" cx="265" cy="130" r="7"/></g><path class="line dash" d="M120 90l145 40"/><text x="65" y="174">PHONE FRAME</text><text x="290" y="174">PEN TIP</text>`+C;
         case"speechPrecise":return O+`<path class="blue" d="M35 50q38-32 76 0-38 32-76 0"/><path class="line dash" d="M73 50l220 45"/>${cube(270,72)}<g class="vrotate"><path class="accentline" d="M270 55q35-35 70 0"/></g><rect class="line vpulse" x="110" y="15" width="125" height="35" rx="17"/><text x="127" y="37">ROTATE 30 DEG</text>`+C;
         case"reality":return O+`<path class="line" d="M30 35h110v115H30z"/><path class="hotline" d="M48 122l25-45 25 28 20-55"/><path class="line dash vdraw" d="M140 92h125"/><g class="vscale">${cube(280,65,"accent")}</g><text x="35" y="170">PHYSICAL OBJECT</text><text x="280" y="170">ABSTRACT PROXY</text>`+C;
-        case"dragdrop":return O+`<rect class="line" x="25" y="35" width="120" height="110"/><rect class="line" x="275" y="35" width="120" height="110"/><g class="vx">${cube(62,70)}</g><path class="hotline vdraw" d="M120 55q80-75 175 0"/><text x="42" y="165">SOURCE REALITY</text><text x="292" y="165">TARGET REALITY</text>`+C;
+        case"dragdrop":return O+`<rect class="line" x="25" y="35" width="120" height="110"/><rect class="line" x="275" y="35" width="120" height="110"/><g class="vx">${cube(62,70)}</g><path class="hotline vdraw" d="M120 55q80-75 175 0"/><text x="42" y="165">ROOM MODEL</text><text x="292" y="165">ROBOT COMMAND</text>`+C;
         case"cutaway":return O+`<circle class="obj" cx="225" cy="90" r="70"/><circle class="line dash" cx="225" cy="90" r="42"/><path class="accentline vdraw" d="M145 105q75-80 155-20"/><g class="vclip"><circle fill="#13231d" cx="225" cy="90" r="42"/><path class="line" d="M190 90h70M225 55v70"/></g><path class="handmark" d="M55 135h48l20-22"/><text x="170" y="172">TRACE > REVEAL</text>`+C;
       }return O+hand+cube()+C;
     }
@@ -180,7 +180,7 @@
       "An imaginary two-handed bar integrates translation, rotation, and scale.",
       "The phone establishes context while the pen supplies precise spatial action.",
       "A reusable physical shape is dynamically bound to many virtual forms.",
-      "An abstract digital proxy makes distant or occluded physical objects manageable."
+      "Digital proxies support selection, filtering, and group navigation; physical actuation requires a separate robot or connected device."
     ];
     [...d.querySelectorAll(".era")].forEach((card,i)=>{
       card.tabIndex=0;card.setAttribute("role","button");
